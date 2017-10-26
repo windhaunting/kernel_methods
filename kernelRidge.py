@@ -11,7 +11,7 @@ import numpy as np
 
 
 
-def KRRS(trainData, testData, i):     
+def KRRS(trainData, testData, i, lambdaPara):     
     '''
     kernel ridge regression from scratch
     k(x1,x2) = (1+x1 * x2) ^i
@@ -21,9 +21,11 @@ def KRRS(trainData, testData, i):
     trainY = trainData[1]
     
     print ("trainX shape[0]: ", trainX.shape[0])
-    kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)
+    
+    #get alpha below
 
-    print ("kArr shape: ", kArr.shape)
+    kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)
+    print ("kArr shape original: ", kArr.shape)
 
     #kArr = np.empty(1)
     for i in range(0, trainX.shape[0]):
@@ -35,17 +37,22 @@ def KRRS(trainData, testData, i):
             #print ("kij: ", kij)
             #kArr = np.vstack((kArr, np.array(kij)))
             #print ("trainX kij: ", kArr)
-            kArr = np.append(kArr, kij)
+            np.append(kArr, kij)
             #print ("kij: ", kArr)
-    
-    print ("kArr shape: ", kArr[0][0], kArr[2][0], kArr[199][199], type(kArr), kArr.shape)
+    print ("kArr shape: ", type(kArr), kArr.shape)
+    #print ("kArr shape: ", kArr[0][0], kArr[2][0], kArr[199][199], type(kArr), kArr.shape)
     print ("kij: ", kArr)
     
+    #get
+    ridgeParas = lambdaPara*np.identity(trainX.shape[0], dtype=np.float)
+    
+    alpha = numpy.linalg.inv(kArr + ridgeParas)
+    print ("ridgeParas: ", ridgeParas, alpha)
+
     '''        
     a=np.array([[1,2,3],[3,4,5], [7,8,9], [1,2,5]])
     b=np.array([[1,2,3],[1,2,3]])
     c = np.array([1,2,3])
     d = np.array([1,2,3])
     res = np.dot(c,d)
-    '''
-    
+    ''' 
