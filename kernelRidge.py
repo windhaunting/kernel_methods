@@ -57,7 +57,13 @@ def KRRS(trainData, testData, i, lambdaPara):
     print ("ridgeParas: ", ridgeParas, alpha, alpha.shape)
     
     
-    for i in range(0, testX.shape[0]):
+    for testInd in range(0, testX.shape[0]):
         
-        xnew = testX[i]
-        print ("kij: ", kArr)
+        xnew = testX[testInd]
+        #for i in range(0, trainX.shape[0]):   # $y_{new} = \sum_{i}  \alpha_i \Phi(x_i) \Phi(x_{new}) 
+        #innerVal = 
+        kij = sum([np.dot(alpha[i], (1 + np.dot(trainX[i], xnew))) for i in range(0, trainX.shape[0])])          #sum ??
+
+        #alpha[i]
+        print ("xnew: ", xnew, kij)
+        
