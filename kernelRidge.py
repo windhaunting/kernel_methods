@@ -13,12 +13,14 @@ import numpy as np
 
 
 
-def KRRS(trainData, testData, i, lambdaPara):     
+def KRRS(trainData, testData, powerI, lambdaPara):     
     '''
     kernel ridge regression from scratch
     k(x1,x2) = (1+x1 * x2) ^i
     input :
         synthetic data
+        powerI = i
+        
     '''
 
     trainX = trainData[0]
@@ -29,15 +31,15 @@ def KRRS(trainData, testData, i, lambdaPara):
     
     #trainX -= .5
     #testX  -= .5
-    #trainX = trainX.reshape(-1,1)
-    #trainX = normalize(trainX, axis=0)
+    
+    #trainX = normalize(trainX.reshape(-1,1), axis=0)
     #testX = normalize(testX.reshape(-1,1), axis=0)
 
 
     print ("trainX shape[0]: ", trainX, trainX.shape[0], trainY.shape)
     
     #get alpha below
-    kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)
+    kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)        #zeros
     print ("kArr shape original: ", kArr.shape)
 
     #kArr = np.empty(1)
@@ -45,16 +47,21 @@ def KRRS(trainData, testData, i, lambdaPara):
         for j in range(0, trainX.shape[0]):
             xi = trainX[i]
             xj = trainX[j]
-            kij = (1.0 + xi*xj) #np.dot(xi, xj))
+            print ()
+            kij = pow((1.0 + np.dot(xi, xj)), powerI) #xi*xj) #
             
-            #print ("kij: ", kij)
+            #print ("xi, xj: ", xi, xj)
             #kArr = np.vstack((kArr, np.array(kij)))
-            #print ("trainX kij: ", kArr)
-            np.append(kArr, kij)
+            #print ("trainX kij: ", kij)
+            kArr[i][j] = kij
             #print ("kij: ", kArr)
-    print ("kArr shape: ", type(kArr), kArr.shape)
+    
+    
+  
+    print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199])
     #print ("kArr shape: ", kArr[0][0], kArr[2][0], kArr[199][199], type(kArr), kArr.shape)
     print ("kij: ", kArr)
+    
     
     #get
     ridgeParas = lambdaPara*np.identity(trainX.shape[0], dtype=np.float)
@@ -71,5 +78,6 @@ def KRRS(trainData, testData, i, lambdaPara):
         ynew = np.sum([np.dot(alpha[i], (1 + np.dot(trainX[i], xnew))) for i in range(0, trainX.shape[0])])          #sum ??
 
         #alpha[i]
-        #print ("xnew: ", xnew, ynew)
-        
+        print ("xnew: ", xnew, ynew)
+    
+    
