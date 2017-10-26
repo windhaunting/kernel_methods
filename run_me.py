@@ -60,6 +60,7 @@ def KernelRidgeScratch():
     lambdaPara = 0.1
     KRRS((train_x, train_y), (test_x, test_y), iLst[0], lambdaPara)
     
+    
 KernelRidgeScratch()
 
 

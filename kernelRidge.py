@@ -15,12 +15,18 @@ def KRRS(trainData, testData, i, lambdaPara):
     '''
     kernel ridge regression from scratch
     k(x1,x2) = (1+x1 * x2) ^i
+    input :
+        synthetic data
     '''
 
     trainX = trainData[0]
     trainY = trainData[1]
     
-    print ("trainX shape[0]: ", trainX.shape[0])
+    
+    testX = testData[0]
+    testY = testData[1]
+    
+    print ("trainX shape[0]: ", trainX.shape[0], trainY.shape)
     
     #get alpha below
 
@@ -46,13 +52,12 @@ def KRRS(trainData, testData, i, lambdaPara):
     #get
     ridgeParas = lambdaPara*np.identity(trainX.shape[0], dtype=np.float)
     
-    alpha = numpy.linalg.inv(kArr + ridgeParas)
-    print ("ridgeParas: ", ridgeParas, alpha)
-
-    '''        
-    a=np.array([[1,2,3],[3,4,5], [7,8,9], [1,2,5]])
-    b=np.array([[1,2,3],[1,2,3]])
-    c = np.array([1,2,3])
-    d = np.array([1,2,3])
-    res = np.dot(c,d)
-    ''' 
+    alpha = np.dot(np.linalg.inv(kArr + ridgeParas), trainY)          #alpha for kernel ridge $\alpha = (\Phi(X)\phi^T(X)+\lambda I)^{-1}Y$ 
+    
+    print ("ridgeParas: ", ridgeParas, alpha, alpha.shape)
+    
+    
+    for i in range(0, testX.shape[0]):
+        
+        xnew = testX[i]
+        print ("kij: ", kArr)
