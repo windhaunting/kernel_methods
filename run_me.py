@@ -57,7 +57,7 @@ def KernelRidgeScratch():
     print('Test=', test_x.shape)
         
     iLst = [1, 2, 4, 6]              #different kernel function indicator
-    KRRS(train_x, train_y, iLst[0])
+    KRRS((train_x, train_y), (test_x, test_y), iLst[0])
     
 KernelRidgeScratch()
 
