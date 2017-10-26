@@ -3,6 +3,9 @@ import numpy as np
 import kaggle
 from sklearn.metrics import accuracy_score
 
+from kernelRidge import KRRS
+
+
 ############################################################################
 # Read in train and test synthetic data
 def read_synthetic_data():
@@ -50,12 +53,12 @@ def KernelRidgeScratch():
     '''
     
     train_x, train_y, test_x, test_y = read_synthetic_data()
-    print('Train=', train_x.shape)
+    print('Train=', train_x.shape, type(train_x))
     print('Test=', test_x.shape)
+        
+    iLst = [1, 2, 4, 6]              #different kernel function indicator
+    KRRS(train_x, train_y, iLst[0])
     
-    x = 1
-    
-   
 KernelRidgeScratch()
 
 
