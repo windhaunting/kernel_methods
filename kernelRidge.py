@@ -21,18 +21,24 @@ def KRRS(trainData, testData, i):
     trainY = trainData[1]
     
     print ("trainX shape[0]: ", trainX.shape[0])
-    kArr = np.zeros((trainX.shape[0], trainX.shape[0]), dtype=np.float)
+    kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)
 
     print ("kArr shape: ", kArr.shape)
 
+    #kArr = np.empty(1)
     for i in range(0, trainX.shape[0]):
         for j in range(0, trainX.shape[0]):
             xi = trainX[i]
             xj = trainX[j]
             kij = (1 + np.dot(xi, xj))
             
-            #print ("trainX kij: ", kij)
-       
+            #print ("kij: ", type(kij))
+            #kArr = np.vstack((kArr, np.array(kij)))
+            #print ("trainX kij: ", kArr)
+    
+    
+    print ("kArr shape: ", kArr[0], kArr[2], type(kArr), type())
+ 
     '''        
     a=np.array([[1,2,3],[3,4,5], [7,8,9], [1,2,5]])
     b=np.array([[1,2,3],[1,2,3]])
