@@ -6,9 +6,9 @@ Created on Tue Oct 24 11:30:43 2017
 @author: fubao
 """
 
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import normalize
 
-#implementation of kernel ridge regression
+#implementation of kernel ridge regression from scratch
 import numpy as np
 
 
@@ -29,9 +29,12 @@ def KRRS(trainData, testData, i, lambdaPara):
     
     #trainX -= .5
     #testX  -= .5
-    
-    minmax_scale
-    print ("trainX shape[0]: ", trainX.shape[0], trainY.shape)
+    #trainX = trainX.reshape(-1,1)
+    #trainX = normalize(trainX, axis=0)
+    #testX = normalize(testX.reshape(-1,1), axis=0)
+
+
+    print ("trainX shape[0]: ", trainX, trainX.shape[0], trainY.shape)
     
     #get alpha below
     kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)
@@ -42,7 +45,7 @@ def KRRS(trainData, testData, i, lambdaPara):
         for j in range(0, trainX.shape[0]):
             xi = trainX[i]
             xj = trainX[j]
-            kij = (1 + np.dot(xi, xj))
+            kij = (1.0 + xi*xj) #np.dot(xi, xj))
             
             #print ("kij: ", kij)
             #kArr = np.vstack((kArr, np.array(kij)))
@@ -56,8 +59,8 @@ def KRRS(trainData, testData, i, lambdaPara):
     #get
     ridgeParas = lambdaPara*np.identity(trainX.shape[0], dtype=np.float)
     
-    alpha = np.dot(np.linalg.inv(kArr + ridgeParas), trainY)          #alpha for kernel ridge $\alpha = (\Phi(X)\phi^T(X)+\lambda I)^{-1}Y$ 
-    print ("ridgeParas: ", ridgeParas, alpha, alpha.shape)
+    alpha = np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainY)          #alpha for kernel ridge $\alpha = (\Phi(X)\phi^T(X)+\lambda I)^{-1}Y$ 
+    print ("ridgeParas: ", ridgeParas,np.linalg.inv(np.add(kArr, ridgeParas)),  alpha, alpha.shape)
     
     
     for testInd in range(0, testX.shape[0]):
@@ -68,5 +71,5 @@ def KRRS(trainData, testData, i, lambdaPara):
         ynew = np.sum([np.dot(alpha[i], (1 + np.dot(trainX[i], xnew))) for i in range(0, trainX.shape[0])])          #sum ??
 
         #alpha[i]
-        print ("xnew: ", xnew, ynew)
+        #print ("xnew: ", xnew, ynew)
         
