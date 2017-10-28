@@ -3,7 +3,7 @@ import numpy as np
 import kaggle
 from sklearn.metrics import accuracy_score
 
-from kernelRidge import KRRS
+from KRRS import KRRS
 
 
 ############################################################################
@@ -58,7 +58,8 @@ def KernelRidgeScratch():
         
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
-    KRRS((train_x, train_y), (test_x, test_y), iLst[0], lambdaPara)
+    
+    KRRS((train_x, train_y), (test_x, test_y), iLst[2], lambdaPara)
     
     
 KernelRidgeScratch()
