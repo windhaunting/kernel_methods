@@ -62,7 +62,15 @@ def KernelRidgeScratch():
     KRRS((train_x, train_y), (test_x, test_y), iLst[2], lambdaPara)
     
     
-KernelRidgeScratch()
+def BasisExpansionRidge():
+    x = 1:
+    
+        
+#KernelRidgeScratch()
+
+BasisExpansionRidge()
+
+
 
 
 '''
