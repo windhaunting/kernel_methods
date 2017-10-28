@@ -4,6 +4,7 @@ import kaggle
 from sklearn.metrics import accuracy_score
 
 from KRRS import KRRS
+from BERR import BERR
 
 
 ############################################################################
@@ -63,11 +64,18 @@ def KernelRidgeScratch():
     
     
 def BasisExpansionRidge():
-    x = 1:
+    train_x, train_y, test_x, test_y = read_synthetic_data()
+    print('Train=', train_x.shape, type(train_x))
+    print('Test=', test_x.shape)
+
+    iLst = [1, 2, 4, 6]              #different kernel function indicator
+    lambdaPara = 0.1
+
+    BERR((train_x, train_y), (test_x, test_y), iLst[2], lambdaPara)
+        
     
         
 #KernelRidgeScratch()
-
 BasisExpansionRidge()
 
 
