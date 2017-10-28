@@ -57,8 +57,7 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
     #trainX = normalize(trainX.reshape(-1,1), axis=0)
     #testX = normalize(testX.reshape(-1,1), axis=0)
 
-
-    print ("trainX shape[0]: ", trainX, trainX.shape[0], trainY.shape)
+    #print ("trainX shape[0]: ", trainX, trainX.shape[0], trainY.shape)
     
     #get alpha below
     kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)        #zeros
@@ -78,18 +77,16 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
             kArr[i][j] = kij
             #print ("kij: ", kArr)
     
-    
   
-    print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199])
+    #print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199])
     #print ("kArr shape: ", kArr[0][0], kArr[2][0], kArr[199][199], type(kArr), kArr.shape)
-    print ("kij: ", kArr)
-    
-    
+    #print ("kij: ", kArr)
+       
     #get
     ridgeParas = lambdaPara*np.identity(trainX.shape[0], dtype=np.float)
     
     alpha = np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainY)          #alpha for kernel ridge $\alpha = (\Phi(X)\phi^T(X)+\lambda I)^{-1}Y$ 
-    print ("ridgeParas: ", ridgeParas,np.linalg.inv(np.add(kArr, ridgeParas)),  alpha, alpha.shape)
+    #print ("ridgeParas: ", ridgeParas,np.linalg.inv(np.add(kArr, ridgeParas)),  alpha, alpha.shape)
     
     YPred = np.empty((testX.shape[0]), dtype=np.float)        #zeros
     for testInd in range(0, testX.shape[0]):
@@ -100,7 +97,9 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
         YPred[testInd] = np.sum([np.dot(alpha[i],  kernelFunc(trainX[i], xnew, powerI)) for i in range(0, trainX.shape[0])])          #sum ??
 
         #alpha[i]
-        print ("xnew: ", xnew, YPred[testInd])
+        #print ("xnew: ", xnew, YPred[testInd])
     
     
-    
+    print ("YPred: ", type(YPred), YPred.shape)
+
+    return YPred

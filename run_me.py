@@ -66,7 +66,6 @@ def kernelFuncTrigo(x1, x2, i):
     Trigonometric function
     k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
     '''
-    
     sigma = 0.5
     kxx = 1 + np.sum(sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1))
     
@@ -84,7 +83,8 @@ def basisExpansTrigo(x, i):
     phi = []
     sigma = 0.5
     for j in range(0, i+1):
-        phi.append(sin(radians(sigma*x)), cos(radians(sigma*x)))
+        #phi.append(sin(radians(sigma*x)))
+        phi.append(cos(radians(np.dot(sigma, x))))
     return phi
 
 
@@ -97,12 +97,24 @@ def KernelRidgeScratch():
     print('Train=', train_x.shape, type(train_x))
     print('Test=', test_x.shape)
         
-    iLst = [1, 2, 4, 6]              #different kernel function indicator
+    iPolyLst = [2, 6]   #[1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
     
-    #for kernel function 1 Polynomial order 
-    YPredictLst = KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, iLst[1], lambdaPara)
+    iTrigLst = [5, 10]
     
+    #for kernel function 1 Polynomial order 
+    YPredictLst = []
+    for i in iPolyLst:
+        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, i, lambdaPara)
+        
+        mseError = compute_MSE(test_y, YPred)
+        YPredictLst.append(YPred)
+    
+    for i in iTrigLst:
+        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncTrigo, i, lambdaPara)
+        mseError = compute_MSE(test_y, YPred)
+        
+        YPredictLst.append(YPred)
     return YPredictLst
     
 
@@ -111,11 +123,24 @@ def BasisExpansionRidge():
     print('Train=', train_x.shape, type(train_x))
     print('Test=', test_x.shape)
 
-    iLst = [1, 2, 4, 6]              #different kernel function indicator
+    iPolyLst = [2, 6]     #  [1, 2, 4, 6]     #different polynomial basis function indicator
     lambdaPara = 0.1
-
-    YPredictLst = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, iLst[1], lambdaPara)
+    
+    iTrigLst = [5, 10]            
+    YPredictLst = []
+    
+    for i in iPolyLst:
+        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
         
+        mseError = compute_MSE(test_y, YPred)
+        YPredictLst.append(YPred)
+        
+    for i in iTrigLst:
+        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansTrigo, i, lambdaPara)
+        mseError = compute_MSE(test_y, YPred)
+        
+        YPredictLst.append(YPred)
+
     return YPredictLst
     
 
@@ -123,12 +148,17 @@ def BasisExpansionRidge():
 
 if __name__== "__main__":
            
+    train_x, train_y, test_x, test_y = read_synthetic_data()
+
     YPredictLstKRRS = KernelRidgeScratch()
     YPredictLstBERR = BasisExpansionRidge()
     
     YPredictLstDegreeAll = YPredictLstKRRS + YPredictLstBERR
     
-
+    print('YPredictLstDegreeAll=', len(YPredictLstDegreeAll))
+    #plotKernelRegression(test_y, YPredictLstDegreeAll)
+    
+    
 '''
 
 train_x, train_y, test_x, test_y = read_synthetic_data()
