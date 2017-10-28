@@ -10,6 +10,7 @@ from math import sin
 from math import cos
 from math import radians
 
+from plotting import plotKernelRegression
 
 ############################################################################
 # Read in train and test synthetic data
@@ -100,10 +101,10 @@ def KernelRidgeScratch():
     lambdaPara = 0.1
     
     #for kernel function 1 Polynomial order 
-    KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, iLst[1], lambdaPara)
+    YPredictLst = KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, iLst[1], lambdaPara)
     
- 
-
+    return YPredictLst
+    
 
 def BasisExpansionRidge():
     train_x, train_y, test_x, test_y = read_synthetic_data()
@@ -113,15 +114,20 @@ def BasisExpansionRidge():
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
 
-    BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, iLst[1], lambdaPara)
+    YPredictLst = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, iLst[1], lambdaPara)
         
+    return YPredictLst
     
-        
-#KernelRidgeScratch()
-BasisExpansionRidge()
 
 
 
+if __name__== "__main__":
+           
+    YPredictLstKRRS = KernelRidgeScratch()
+    YPredictLstBERR = BasisExpansionRidge()
+    
+    YPredictLstDegreeAll = YPredictLstKRRS + YPredictLstBERR
+    
 
 '''
 
