@@ -71,6 +71,21 @@ def kernelFuncTrigo(x1, x2, i):
     
     return kxx
 
+def basisExpansPoly(x, i):
+    # \phi(x) = [1, x, x^2, ...., x^i]
+    phi = []
+    for j in range(0, i+1):
+        phi.append(pow(x, j))
+    return phi
+
+def basisExpansPoly(x, i):
+    #
+    phi = []
+    sigma = 0.5
+    for j in range(0, i+1):
+        phi.append(sin(radians(sigma*x)), cos(radians(sigma*x)))
+    return phi
+
 def KernelRidgeScratch():
     '''
     call kernel ridge scratch
@@ -86,7 +101,9 @@ def KernelRidgeScratch():
     #for kernel function 1 Polynomial order 
     KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, iLst[1], lambdaPara)
     
-    
+ 
+
+
 def BasisExpansionRidge():
     train_x, train_y, test_x, test_y = read_synthetic_data()
     print('Train=', train_x.shape, type(train_x))
