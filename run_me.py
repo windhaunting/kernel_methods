@@ -60,7 +60,7 @@ def KernelRidgeScratch():
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
     
-    KRRS((train_x, train_y), (test_x, test_y), iLst[2], lambdaPara)
+    KRRS((train_x, train_y), (test_x, test_y), iLst[1], lambdaPara)
     
     
 def BasisExpansionRidge():
@@ -71,11 +71,11 @@ def BasisExpansionRidge():
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
 
-    BERR((train_x, train_y), (test_x, test_y), iLst[2], lambdaPara)
+    BERR((train_x, train_y), (test_x, test_y), iLst[1], lambdaPara)
         
     
         
-#KernelRidgeScratch()
+KernelRidgeScratch()
 BasisExpansionRidge()
 
 

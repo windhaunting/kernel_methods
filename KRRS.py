@@ -69,15 +69,15 @@ def KRRS(trainData, testData, powerI, lambdaPara):
     alpha = np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainY)          #alpha for kernel ridge $\alpha = (\Phi(X)\phi^T(X)+\lambda I)^{-1}Y$ 
     print ("ridgeParas: ", ridgeParas,np.linalg.inv(np.add(kArr, ridgeParas)),  alpha, alpha.shape)
     
-    
+    ynew = np.empty((testX.shape[0]), dtype=np.float)        #zeros
     for testInd in range(0, testX.shape[0]):
         
         xnew = testX[testInd]
         #for i in range(0, trainX.shape[0]):   # $y_{new} = \sum_{i}  \alpha_i \Phi(x_i) \Phi(x_{new}) 
         #innerVal = 
-        ynew = np.sum([np.dot(alpha[i], pow((1 + np.dot(trainX[i], xnew)), powerI)) for i in range(0, trainX.shape[0])])          #sum ??
+        ynew[testInd] = np.sum([np.dot(alpha[i], pow((1 + np.dot(trainX[i], xnew)), powerI)) for i in range(0, trainX.shape[0])])          #sum ??
 
         #alpha[i]
-        print ("xnew: ", xnew, ynew)
+        print ("xnew: ", xnew, ynew[testInd])
     
     
