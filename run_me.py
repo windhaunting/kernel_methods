@@ -6,6 +6,10 @@ from sklearn.metrics import accuracy_score
 from KRRS import KRRS
 from BERR import BERR
 
+from math import sin
+from math import cos
+from math import radians
+
 
 ############################################################################
 # Read in train and test synthetic data
@@ -47,6 +51,25 @@ def compute_MSE(y, y_hat):
 ############################################################################
 
 
+def kernelFuncPoly(x1, x2, powerI):
+    '''
+    polynominal function
+    k(x1,x2) = (1+x1 * x2) ^i
+    '''
+    
+    return pow((1 + np.dot(x1, x2)), powerI)
+
+
+def kernelFuncTrigo(x1, x2, i):
+    '''
+    Trigonometric function
+    k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
+    '''
+    
+    sigma = 0.5
+    kxx = 1 + np.sum(sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1))
+    
+    return kxx
 
 def KernelRidgeScratch():
     '''
@@ -60,7 +83,8 @@ def KernelRidgeScratch():
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
     
-    KRRS((train_x, train_y), (test_x, test_y), iLst[1], lambdaPara)
+    #for kernel function 1 Polynomial order 
+    KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, iLst[1], lambdaPara)
     
     
 def BasisExpansionRidge():
@@ -76,7 +100,7 @@ def BasisExpansionRidge():
     
         
 KernelRidgeScratch()
-BasisExpansionRidge()
+#BasisExpansionRidge()
 
 
 
