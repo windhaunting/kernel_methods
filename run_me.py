@@ -78,13 +78,14 @@ def basisExpansPoly(x, i):
         phi.append(pow(x, j))
     return phi
 
-def basisExpansPoly(x, i):
-    #
+def basisExpansTrigo(x, i):
+    #\phi(x) = [1, sinδx, cosδx, sin2δx, cos2δx, ..., siniδx, cosiδx]
     phi = []
     sigma = 0.5
     for j in range(0, i+1):
         phi.append(sin(radians(sigma*x)), cos(radians(sigma*x)))
     return phi
+
 
 def KernelRidgeScratch():
     '''
@@ -112,12 +113,12 @@ def BasisExpansionRidge():
     iLst = [1, 2, 4, 6]              #different kernel function indicator
     lambdaPara = 0.1
 
-    BERR((train_x, train_y), (test_x, test_y), iLst[1], lambdaPara)
+    BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, iLst[1], lambdaPara)
         
     
         
-KernelRidgeScratch()
-#BasisExpansionRidge()
+#KernelRidgeScratch()
+BasisExpansionRidge()
 
 
 
