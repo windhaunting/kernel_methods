@@ -67,8 +67,10 @@ def kernelFuncTrigo(x1, x2, i):
     k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
     '''
     sigma = 0.5
-    kxx = 1 + np.sum([sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1)])
+    #kxx = 1 + np.sum([sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1)])
     
+    kxx = 1 + np.sum([sin(k*sigma*x1) * sin(k*sigma*x2)  + cos(k*sigma*x1) * cos(k*sigma*x2)  for k in range(1, i+1)])
+
     return kxx
 
 
@@ -88,8 +90,8 @@ def basisExpansTrigo(x, i):
     #print ("xxxxxxxxxxxx: ", x, len(x), type(x))
     for j in range(1, i+1):
         #if sin(radians(j*sigma*x[0])) != 0:
-        phi.append(sin(radians(j*sigma*x[0])))
-        phi.append(cos(radians(j*sigma*x[0])))
+        phi.append(sin(j*sigma*x[0]))           #radians()
+        phi.append(cos(j*sigma*x[0]))
     return phi
 
 
@@ -148,8 +150,7 @@ def BasisExpansionRidge():
     mseErrorLst = []
 
     for i in iPolyLst:  #[1:]:            #test only
-        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
-        
+        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)        
         YPred = BERRRidge((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
 
         mseError = compute_MSE(test_y, YPred)
