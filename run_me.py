@@ -75,21 +75,21 @@ def kernelFuncTrigo(x1, x2, i):
 def basisExpansPoly(x, i):
     # \phi(x) = [1, x, x^2, ...., x^i]
     phi = []
-    print ("xxxxxxxxxxxxaa: ", x, len(x))
-
+    #print ("xxxxxxxxxxxxaa: ", x, len(x))
+    
     for j in range(0, i+1):
-        phi.append(pow(x, j))
+        phi.append(pow(x[0], j))
     return phi
 
 def basisExpansTrigo(x, i):
     #\phi(x) = [1, sinδx, cosδx, sin2δx, cos2δx, ..., siniδx, cosiδx]
     phi = []
     sigma = 0.5
-    print ("xxxxxxxxxxxx: ", x, len(x), type(x))
+    #print ("xxxxxxxxxxxx: ", x, len(x), type(x))
     for j in range(0, i+1):
         
-        phi.append(sin(radians(j*sigma*x)))
-        phi.append(cos(radians(j*sigma*x)))
+        phi.append(sin(radians(j*sigma*x[0])))
+        phi.append(cos(radians(j*sigma*x[0])))
     return phi
 
 
@@ -155,13 +155,13 @@ if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    #YPredictLstKRRS = KernelRidgeScratch()
+    YPredictLstKRRS = KernelRidgeScratch()
     YPredictLstBERR = BasisExpansionRidge()
     
-    #YPredictLstDegreeAll = YPredictLstKRRS + YPredictLstBERR
+    YPredictLstDegreeAll = YPredictLstKRRS + YPredictLstBERR
     
-    #print('YPredictLstDegreeAll=', len(YPredictLstDegreeAll))
-    #plotKernelRegression(test_y, YPredictLstDegreeAll)
+    print('YPredictLstDegreeAll=', len(YPredictLstDegreeAll))
+    plotKernelRegression(test_x, test_y, YPredictLstDegreeAll)
     
     
 '''
