@@ -19,16 +19,16 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
         powerI = i
     '''
 
-    trainX = trainData[0]
-    trainY = trainData[1]
+    trainX = trainData[0].reshape(trainData[0].shape[0], 1)
+    trainY = trainData[1].reshape(trainData[0].shape[0], 1)
     
-    testX = testData[0]
-    testY = testData[1]
+    testX = testData[0].reshape(trainData[0].shape[0], 1)
+    testY = testData[1].reshape(trainData[0].shape[0], 1)
     
-    #print ("trainX shape[0]: ", trainX, type(trainX), trainX.shape[0], trainY.shape)
+    print ("trainX shape[0]: ",  type(trainX), trainX.shape[0], trainY.shape)
 
 
-    trainPhiX= np.apply_along_axis(basisExpanfunc, 0, trainX, powerI).T
+    trainPhiX= np.apply_along_axis(basisExpanfunc, 1, trainX, powerI).T
     #print ("test b: ", trainPhiX)
     #print ("trainPhiX shape[0]: ", trainPhiX, type(trainPhiX), trainPhiX.shape)
     #construct \phi x, the basis expansion.
@@ -37,7 +37,9 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
 
     #for i in range(0, trainPhiX.shape[0]):
     #    for j in range(0, trainPhiX.shape[0]):
-            
+      
+    print ("trainPhiX shape[0]: ",  type(trainPhiX), trainPhiX.shape)
+      
     kArr= np.dot(trainPhiX, trainPhiX.T) 
                 
     ridgeParas = lambdaPara*np.identity(trainPhiX.shape[0], dtype=np.float)

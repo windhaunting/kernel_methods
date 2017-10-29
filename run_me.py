@@ -87,7 +87,8 @@ def basisExpansTrigo(x, i):
     sigma = 0.5
     print ("xxxxxxxxxxxx: ", x, len(x), type(x))
     for j in range(0, i+1):
-        #phi.append(sin(radians(j*sigma*x)))
+        
+        phi.append(sin(radians(j*sigma*x)))
         phi.append(cos(radians(j*sigma*x)))
     return phi
 
