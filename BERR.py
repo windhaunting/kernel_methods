@@ -38,7 +38,7 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     #for i in range(0, trainPhiX.shape[0]):
     #    for j in range(0, trainPhiX.shape[0]):
       
-    #print ("trainPhiX shape[0]: ",  type(trainPhiX), trainPhiX.shape, trainPhiX)
+    print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
       
     kArr= np.dot(trainPhiX, trainPhiX.T) 
                 

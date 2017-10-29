@@ -83,11 +83,11 @@ def basisExpansPoly(x, i):
 
 def basisExpansTrigo(x, i):
     #\phi(x) = [1, sinδx, cosδx, sin2δx, cos2δx, ..., siniδx, cosiδx]
-    phi = []
+    phi = [1]
     sigma = 0.5
     #print ("xxxxxxxxxxxx: ", x, len(x), type(x))
-    for j in range(0, i+1):
-        
+    for j in range(1, i+1):
+        #if sin(radians(j*sigma*x[0])) != 0:
         phi.append(sin(radians(j*sigma*x[0])))
         phi.append(cos(radians(j*sigma*x[0])))
     return phi
@@ -132,8 +132,8 @@ def BasisExpansionRidge():
     lambdaPara = 0.1
     
     iTrigLst = [5, 10]            
-    YPredictLst = []
-    
+   
+    YPredictLst = [] 
     for i in iPolyLst:
         YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
         
