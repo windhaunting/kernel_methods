@@ -1,10 +1,10 @@
 # Import python modules
 import numpy as np
 import kaggle
-from sklearn.metrics import accuracy_score
 
 from KRRS import KRRS
-from BERR import BERR
+from BERR import BERRScratch
+from BERR import BERRRidge
 
 from math import sin
 from math import cos
@@ -147,8 +147,11 @@ def BasisExpansionRidge():
     indexPlot = 1
     mseErrorLst = []
 
-    for i in iPolyLst[1:]:            #test only
-        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
+    for i in iPolyLst:  #[1:]:            #test only
+        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
+        
+        YPred = BERRRidge((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
+
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
 
@@ -157,16 +160,18 @@ def BasisExpansionRidge():
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
     
-    '''
+    
     for j in iTrigLst:
-        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+        YPred = BERRRidge((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
 
         print('BEER mseError trignometric i=', mseError, j)
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
-    '''
+    
     return YPredictLstMap, mseErrorLst
     
 
@@ -176,15 +181,15 @@ if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    #YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch()
+    YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch()
     YPredictLstMapBERR, mseErrorLstBEER = BasisExpansionRidge()
     
-    #YPredictLstMapDegreeAll = {**YPredictLstMapKRRS, **YPredictLstMapBERR}  
+    YPredictLstMapDegreeAll = {**YPredictLstMapKRRS, **YPredictLstMapBERR}  
     
     #print('YPredictLstDegreeAll=', len(YPredictLstMapDegreeAll))
-    #plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
+    plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
-    #print ("mseErrors: ", mseErrorLstKRRS)
+    print ("mseErrors: ", mseErrorLstKRRS)
     print ("mseErrors: ", mseErrorLstBEER)
 
 '''

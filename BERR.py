@@ -7,10 +7,12 @@ Created on Fri Oct 27 22:05:32 2017
 """
 
 import numpy as np
+from sklearn.linear_model import Ridge
+
 
 #basis expansion + kernel ridge
 
-def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):     
+def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):     
     '''
     kernel ridge regression from scratch
     k(x1,x2) = (1+x1 * x2) ^i
@@ -44,8 +46,8 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
                 
     ridgeParas = lambdaPara*np.identity(trainPhiX.shape[0], dtype=np.float)
     
-    #W = np.dot(np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainPhiX).T, trainY)
-    W = np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), np.dot(trainPhiX, trainY.T))
+    W = np.dot(np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainPhiX).T, trainY)
+    #W = np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), np.dot(trainPhiX.T, trainY))
     #print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199], W.shape)
     
     #
@@ -56,4 +58,27 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
 
     return YPred
     
+  
+def BERRRidge(trainData, testData, basisExpanfunc, powerI, lambdaPara): 
+    '''
+    basis expansion + sklearn ridge regression 
+    '''    
+    trainX = trainData[0].reshape(trainData[0].shape[0], 1)
+    trainY = trainData[1].reshape(trainData[1].shape[0], 1)
     
+    testX = testData[0].reshape(testData[0].shape[0], 1)
+    testY = testData[1].reshape(testData[1].shape[0], 1)
+    
+    trainPhiX= np.apply_along_axis(basisExpanfunc, 1, trainX, powerI)          #.T
+    testPhiX = np.apply_along_axis(basisExpanfunc, 1, testX, powerI)
+
+    print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
+
+    clf = Ridge(alpha=lambdaPara)
+    clf.fit(trainPhiX, trainY)
+    
+    YPred = clf.predict(testPhiX)
+    
+    print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
+
+    return YPred
