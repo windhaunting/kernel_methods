@@ -75,7 +75,7 @@ def kernelFuncTrigo(x1, x2, i):
 def basisExpansPoly(x, i):
     # \phi(x) = [1, x, x^2, ...., x^i]
     phi = []
-    #print ("xxxxxxxxxxxxaa: ", x, len(x))
+    print ("xxxxxxxxxxxxaa: ", x, len(x), x[0])
     
     for j in range(0, i+1):
         phi.append(pow(x[0], j))
@@ -147,7 +147,7 @@ def BasisExpansionRidge():
     indexPlot = 1
     mseErrorLst = []
 
-    for i in iPolyLst:
+    for i in iPolyLst[1:]:            #test only
         YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
@@ -156,7 +156,8 @@ def BasisExpansionRidge():
 
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
-        
+    
+    '''
     for j in iTrigLst:
         YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
         mseError = compute_MSE(test_y, YPred)
@@ -165,7 +166,7 @@ def BasisExpansionRidge():
         print('BEER mseError trignometric i=', mseError, j)
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
-        
+    '''
     return YPredictLstMap, mseErrorLst
     
 
@@ -175,7 +176,7 @@ if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch()
+    #YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch()
     YPredictLstMapBERR, mseErrorLstBEER = BasisExpansionRidge()
     
     #YPredictLstMapDegreeAll = {**YPredictLstMapKRRS, **YPredictLstMapBERR}  
@@ -183,7 +184,9 @@ if __name__== "__main__":
     #print('YPredictLstDegreeAll=', len(YPredictLstMapDegreeAll))
     #plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
-    print ("mseErrors: ", mseErrorLstKRRS, mseErrorLstBEER)
+    #print ("mseErrors: ", mseErrorLstKRRS)
+    print ("mseErrors: ", mseErrorLstBEER)
+
 '''
 
 train_x, train_y, test_x, test_y = read_synthetic_data()
