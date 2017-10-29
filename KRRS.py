@@ -61,7 +61,7 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
     
     #get alpha below
     kArr = np.empty((trainX.shape[0], trainX.shape[0]), dtype=np.float)        #zeros
-    print ("kArr shape original: ", kArr.shape)
+    #print ("kArr shape original: ", kArr.shape)
 
     #kArr = np.empty(1)
     for i in range(0, trainX.shape[0]):
@@ -100,6 +100,6 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
         #print ("xnew: ", xnew, YPred[testInd])
     
     
-    print ("YPred: ", type(YPred), YPred.shape)
+    #print ("YPred: ", type(YPred), YPred.shape)
 
     return YPred

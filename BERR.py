@@ -25,7 +25,7 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     testX = testData[0].reshape(testData[0].shape[0], 1)
     testY = testData[1].reshape(testData[0].shape[0], 1)
     
-    print ("trainX shape[0]: ",  type(trainX), trainX.shape[0], trainY.shape)
+    #print ("trainX shape[0]: ",  type(trainX), trainX.shape[0], trainY.shape)
 
 
     trainPhiX= np.apply_along_axis(basisExpanfunc, 1, trainX, powerI)          #.T
@@ -38,7 +38,7 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     #for i in range(0, trainPhiX.shape[0]):
     #    for j in range(0, trainPhiX.shape[0]):
       
-    print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
+    #print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
       
     kArr= np.dot(trainPhiX, trainPhiX.T) 
                 
@@ -46,7 +46,7 @@ def BERR(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     
     W = np.dot(np.dot(np.linalg.inv(np.add(kArr, ridgeParas)), trainPhiX).T, trainY)
             
-    print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199], W.shape)
+    #print ("kArr shape: ", type(kArr), kArr.shape, kArr[199][199], W.shape)
     
     #
     testPhiX = np.apply_along_axis(basisExpanfunc, 1, testX, powerI)

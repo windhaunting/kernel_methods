@@ -67,7 +67,7 @@ def kernelFuncTrigo(x1, x2, i):
     k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
     '''
     sigma = 0.5
-    kxx = 1 + np.sum(sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1))
+    kxx = 1 + np.sum([sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1)])
     
     return kxx
 
@@ -108,19 +108,29 @@ def KernelRidgeScratch():
     iTrigLst = [5, 10]
     
     #for kernel function 1 Polynomial order 
-    YPredictLst = []
+    indexPlot = 0
+    YPredictLstMap = {}
+    mseErrorLst = []
     for i in iPolyLst:
         YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, i, lambdaPara)
         
         mseError = compute_MSE(test_y, YPred)
-        YPredictLst.append(YPred)
-    
-    for i in iTrigLst:
-        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncTrigo, i, lambdaPara)
-        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+
+        print('KRRS mseError poly i=', mseError, i)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
         
-        YPredictLst.append(YPred)
-    return YPredictLst
+    for j in iTrigLst:
+        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncTrigo, j, lambdaPara)
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+        print('KRRS mseError trignometric i=', mseError, j)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+        
+        
+    return YPredictLstMap, mseErrorLst
     
 
 def BasisExpansionRidge():
@@ -133,20 +143,30 @@ def BasisExpansionRidge():
     
     iTrigLst = [5, 10]            
    
-    YPredictLst = [] 
+    YPredictLstMap = {}
+    indexPlot = 1
+    mseErrorLst = []
+
     for i in iPolyLst:
         YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
-        
         mseError = compute_MSE(test_y, YPred)
-        YPredictLst.append(YPred)
-        
-    for i in iTrigLst:
-        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansTrigo, i, lambdaPara)
-        mseError = compute_MSE(test_y, YPred)
-        
-        YPredictLst.append(YPred)
+        mseErrorLst.append(mseError)
 
-    return YPredictLst
+        print('BEER mseError poly i=', mseError, i)
+
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+        
+    for j in iTrigLst:
+        YPred = BERR((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+
+        print('BEER mseError trignometric i=', mseError, j)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+        
+    return YPredictLstMap, mseErrorLst
     
 
 
@@ -155,15 +175,15 @@ if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    YPredictLstKRRS = KernelRidgeScratch()
-    YPredictLstBERR = BasisExpansionRidge()
+    YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch()
+    YPredictLstMapBERR, mseErrorLstBEER = BasisExpansionRidge()
     
-    YPredictLstDegreeAll = YPredictLstKRRS + YPredictLstBERR
+    #YPredictLstMapDegreeAll = {**YPredictLstMapKRRS, **YPredictLstMapBERR}  
     
-    print('YPredictLstDegreeAll=', len(YPredictLstDegreeAll))
-    plotKernelRegression(test_x, test_y, YPredictLstDegreeAll)
+    #print('YPredictLstDegreeAll=', len(YPredictLstMapDegreeAll))
+    #plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
-    
+    print ("mseErrors: ", mseErrorLstKRRS, mseErrorLstBEER)
 '''
 
 train_x, train_y, test_x, test_y = read_synthetic_data()
