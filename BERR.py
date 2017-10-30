@@ -12,9 +12,8 @@ from sklearn.linear_model import Ridge
 from math import sin
 from math import cos
 
-from run_me import read_synthetic_data
-from run_me import compute_MSE
-
+from commons import read_synthetic_data
+from commons import compute_MSE
 
 #basis expansion + kernel ridge
 
@@ -31,7 +30,7 @@ def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     trainY = trainData[1].reshape(trainData[1].shape[0], 1)
     
     testX = testData[0].reshape(testData[0].shape[0], 1)
-    testY = testData[1].reshape(testData[1].shape[0], 1)
+    #testY = testData[1].reshape(testData[1].shape[0], 1)
     
     #print ("trainX shape[0]: ",  type(trainX), trainX.shape[0], trainY.shape)
 
@@ -46,7 +45,7 @@ def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     #for i in range(0, trainPhiX.shape[0]):
     #    for j in range(0, trainPhiX.shape[0]):
       
-    print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
+    #print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
       
     kArr= np.dot(trainPhiX, trainPhiX.T) 
                 
@@ -59,7 +58,7 @@ def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     #
     testPhiX = np.apply_along_axis(basisExpanfunc, 1, testX, powerI)
     YPred = np.dot(testPhiX, W)
-    print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
+    #print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
 
 
     return YPred
@@ -73,19 +72,19 @@ def BERRRidge(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     trainY = trainData[1].reshape(trainData[1].shape[0], 1)
     
     testX = testData[0].reshape(testData[0].shape[0], 1)
-    testY = testData[1].reshape(testData[1].shape[0], 1)
+    #testY = testData[1].reshape(testData[1].shape[0], 1)
     
     trainPhiX= np.apply_along_axis(basisExpanfunc, 1, trainX, powerI)          #.T
     testPhiX = np.apply_along_axis(basisExpanfunc, 1, testX, powerI)
 
-    print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
+    #print ("trainPhiX shape[0]: ",  powerI, type(trainPhiX), trainPhiX.shape, trainPhiX)
 
     clf = Ridge(alpha=lambdaPara)
     clf.fit(trainPhiX, trainY)
     
     YPred = clf.predict(testPhiX)
     
-    print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
+    #print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
 
     return YPred
 
@@ -125,10 +124,7 @@ def BasisExpansionRidge(iPolyLst, iTrigLst):
     print('Train=', train_x.shape, type(train_x))
     print('Test=', test_x.shape)
 
-    iPolyLst = [2, 6]     #  [1, 2, 4, 6]     #different polynomial basis function degrees
     lambdaPara = 0.1
-    
-    iTrigLst = [5, 10]            
    
     YPredictLstMap = {}
     indexPlot = 1
@@ -141,7 +137,7 @@ def BasisExpansionRidge(iPolyLst, iTrigLst):
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
 
-        print('BEER mseError poly i=', mseError, i)
+        #print('BEER mseError poly i=', mseError, i)
 
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
@@ -154,7 +150,7 @@ def BasisExpansionRidge(iPolyLst, iTrigLst):
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
 
-        print('BEER mseError trignometric i=', mseError, j)
+        #print('BEER mseError trignometric i=', mseError, j)
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
     

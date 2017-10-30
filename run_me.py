@@ -1,5 +1,4 @@
 # Import python modules
-import numpy as np
 import kaggle
 
 from KRRS import KernelRidgeScratch
@@ -7,44 +6,7 @@ from BERR import BasisExpansionRidge
 
 from plotting import plotKernelRegression
 
-############################################################################
-# Read in train and test synthetic data
-def read_synthetic_data():
-	print('Reading synthetic data ...')
-	train_x = np.loadtxt('../../Data/Synthetic/data_train.txt', delimiter = ',', dtype=float)
-	train_y = np.loadtxt('../../Data/Synthetic/label_train.txt', delimiter = ',', dtype=float)
-	test_x = np.loadtxt('../../Data/Synthetic/data_test.txt', delimiter = ',', dtype=float)
-	test_y = np.loadtxt('../../Data/Synthetic/label_test.txt', delimiter = ',', dtype=float)
-
-	return (train_x, train_y, test_x, test_y)
-
-############################################################################
-# Read in train and test credit card data
-def read_creditcard_data():
-	print('Reading credit card data ...')
-	train_x = np.loadtxt('../../Data/CreditCard/data_train.txt', delimiter = ',', dtype=float)
-	train_y = np.loadtxt('../../Data/CreditCard/label_train.txt', delimiter = ',', dtype=float)
-	test_x = np.loadtxt('../../Data/CreditCard/data_test.txt', delimiter = ',', dtype=float)
-
-	return (train_x, train_y, test_x)
-
-############################################################################
-# Read in train and test tumor data
-def read_tumor_data():
-	print('Reading tumor data ...')
-	train_x = np.loadtxt('../../Data/Tumor/data_train.txt', delimiter = ',', dtype=float)
-	train_y = np.loadtxt('../../Data/Tumor/label_train.txt', delimiter = ',', dtype=float)
-	test_x = np.loadtxt('../../Data/Tumor/data_test.txt', delimiter = ',', dtype=float)
-
-	return (train_x, train_y, test_x)
-
-############################################################################
-# Compute MSE
-def compute_MSE(y, y_hat):
-	# mean squared error
-	return np.mean(np.power(y - y_hat, 2))
-
-############################################################################
+from commons import read_synthetic_data
 
 
 
@@ -53,6 +15,7 @@ if __name__== "__main__":
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
     # question 1 d1 
+    '''
     print ("begin to get the plotting for KRRS and BERR for question 1d1: " )
     iPolyLst = [2, 6]
     iTrigLst = [5, 10]
@@ -68,11 +31,20 @@ if __name__== "__main__":
     #print('YPredictLstDegreeAll=', len(YPredictLstMapDegreeAll))
     plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
+    '''
     
     #question 1d2
     print ("begin to get the MSE for KRRS and BERR for question 1d2: " )
 
+    iPolyLst = [1, 2, 4, 6]      #different polynomial kernel function degrees
+    iTrigLst = [3, 5, 10]       #different trignometric kernel function degrees
 
+    YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch(iPolyLst, iTrigLst)
+    
+    iPolyLst = [1, 2, 4, 6]     #different polynomial basis function degrees
+    iTrigLst = [3, 5, 10]       #different trignometric basis function degrees
+    YPredictLstMapBERR, mseErrorLstBEER = BasisExpansionRidge(iPolyLst, iTrigLst)
+    
     print ("mseErrors: ", mseErrorLstKRRS)
     print ("mseErrors: ", mseErrorLstBEER)
 

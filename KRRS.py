@@ -12,9 +12,8 @@ import numpy as np
 
 from math import sin
 from math import cos
-
-from run_me import read_synthetic_data
-from run_me import compute_MSE
+from commons import read_synthetic_data
+from commons import compute_MSE
 
 #implementation of kernel ridge regression from scratch
 
@@ -122,7 +121,6 @@ def KernelRidgeScratch(iPolyLst, iTrigLst):
     print('Train=', train_x.shape, type(train_x))
     print('Test=', test_x.shape)
         
-       #[1, 2, 4, 6]              #different kernel function degrees
     lambdaPara = 0.1
     
     
@@ -136,7 +134,7 @@ def KernelRidgeScratch(iPolyLst, iTrigLst):
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
 
-        print('KRRS mseError poly i=', mseError, i)
+        #print('KRRS mseError poly i=', mseError, i)
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
         
@@ -144,7 +142,7 @@ def KernelRidgeScratch(iPolyLst, iTrigLst):
         YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncTrigo, j, lambdaPara)
         mseError = compute_MSE(test_y, YPred)
         mseErrorLst.append(mseError)
-        print('KRRS mseError trignometric i=', mseError, j)
+        #print('KRRS mseError trignometric i=', mseError, j)
         YPredictLstMap[indexPlot] = YPred
         indexPlot += 2
         
