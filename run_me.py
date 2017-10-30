@@ -55,9 +55,11 @@ if __name__== "__main__":
     # credit card activity dataset regression
     
     print ("begin to predict for credit card activity for question 1e: " )
-    kfold = 5
-    fileTestOutputDT = "../Predictions/CreditCard/best_cv"
-    kernelRidgeSkLearnCV(kfold)
+    kfoldLst = [5, 6, 7, 8, 9, 10]
+    for kfold in kfoldLst:
+        fileTestOutputDT = "../Predictions/CreditCard/best_cv_ + kfold"
+        kernelRidgeSkLearnCV(kfold, fileTestOutputDT)
+        
 
 
 
