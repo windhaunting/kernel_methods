@@ -106,7 +106,7 @@ def kernelFuncTrigo(x1, x2, i):
     sigma = 0.5
     #kxx = 1 + np.sum([sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1)])
     
-    kxx = 1 + np.sum([sin(k*sigma*x1) * sin(k*sigma*x2)  + cos(k*sigma*x1) * cos(k*sigma*x2)  for k in range(1, i+1)])
+    kxx = 1 + np.sum([np.dot(sin(k*sigma*x1), sin(k*sigma*x2))  + np.dot(cos(k*sigma*x1), cos(k*sigma*x2))  for k in range(1, i+1)])
 
     return kxx
 
