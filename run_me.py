@@ -57,7 +57,7 @@ if __name__== "__main__":
     print ("begin to predict for credit card activity for question 1e: " )
     kfoldLst = [5, 6, 7, 8, 9, 10]
     for kfold in kfoldLst:
-        fileTestOutputDT = "../Predictions/CreditCard/best_cv_ + kfold"
+        fileTestOutputDT = "../Predictions/CreditCard/best_cv_" + str(kfold)
         kernelRidgeSkLearnCV(kfold, fileTestOutputDT)
         
 
