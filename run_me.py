@@ -8,15 +8,18 @@ from plotting import plotKernelRegression
 
 from commons import read_synthetic_data
 
+from kernelRidgeSklearn import kernelRidgeSkLearnCV 
+
+
 
 
 if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    # question 1 d1 
     '''
-    print ("begin to get the plotting for KRRS and BERR for question 1d1: " )
+    # question 1 d1 
+    print ("begin to get the plotting from KRRS and BERR for question 1d1: " )
     iPolyLst = [2, 6]
     iTrigLst = [5, 10]
 
@@ -32,9 +35,9 @@ if __name__== "__main__":
     plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
     '''
-    
+    '''
     #question 1d2
-    print ("begin to get the MSE for KRRS and BERR for question 1d2: " )
+    print ("begin to get the MSE from KRRS and BERR for question 1d2: " )
 
     iPolyLst = [1, 2, 4, 6]      #different polynomial kernel function degrees
     iTrigLst = [3, 5, 10]       #different trignometric kernel function degrees
@@ -48,6 +51,13 @@ if __name__== "__main__":
     print ("mseErrors: ", mseErrorLstKRRS)
     print ("mseErrors: ", mseErrorLstBEER)
 
+    '''
+    # credit card activity dataset regression
+    
+    print ("begin to predict for credit card activity for question 1e: " )
+    kfold = 5
+    fileTestOutputDT = "../Predictions/CreditCard/best_cv"
+    kernelRidgeSkLearnCV(kfold)
 
 
 
