@@ -6,34 +6,18 @@ Created on Tue Oct 24 11:30:43 2017
 @author: fubao
 """
 
-from sklearn.preprocessing import normalize
+#from sklearn.preprocessing import normalize
 
-#implementation of kernel ridge regression from scratch
 import numpy as np
 
 from math import sin
 from math import cos
-from math import radians
 
+from run_me import read_synthetic_data
+from run_me import compute_MSE
 
-'''
-def kernelFunc1(x1, x2, powerI):
-    
-    #k(x1,x2) = (1+x1 * x2) ^i
-    
-    return pow((1 + np.dot(x1, x2)), powerI)
+#implementation of kernel ridge regression from scratch
 
-
-def kernelFunc2(x1, x2, i):
-    
-    #k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
-    
-    sigma = 0.5
-    kxx = 1 + np.sum(sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1))
-    
-    return kxx
-
-'''
 
 def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):     
     '''
@@ -49,7 +33,7 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
     trainY = trainData[1]
     
     testX = testData[0]
-    testY = testData[1]
+ #   testY = testData[1]
     
     #trainX -= .5
     #testX  -= .5
@@ -103,3 +87,66 @@ def KRRS(trainData, testData, kernelFunc, powerI, lambdaPara):
     #print ("YPred: ", type(YPred), YPred.shape)
 
     return YPred
+
+
+
+def kernelFuncPoly(x1, x2, powerI):
+    '''
+    polynominal function
+    k(x1,x2) = (1+x1 * x2) ^i
+    '''
+    
+    return pow((1 + np.dot(x1, x2)), powerI)
+
+
+def kernelFuncTrigo(x1, x2, i):
+    '''
+    Trigonometric function
+    k(x1; x2) = 1  + sum((sin(k δ x1) × sin(k δ x2) + cos(k δ x1) × cos(k δ x2))) k =1 to i
+    '''
+    sigma = 0.5
+    #kxx = 1 + np.sum([sin(radians(k*sigma*x1)) * sin(radians(k*sigma*x2))  + cos(radians(k*sigma*x1)) * cos(radians(k*sigma*x2))  for k in range(1, i+1)])
+    
+    kxx = 1 + np.sum([sin(k*sigma*x1) * sin(k*sigma*x2)  + cos(k*sigma*x1) * cos(k*sigma*x2)  for k in range(1, i+1)])
+
+    return kxx
+
+
+
+def KernelRidgeScratch(iPolyLst, iTrigLst):
+    '''
+    call kernel ridge scratch for plotting
+    '''
+    
+    train_x, train_y, test_x, test_y = read_synthetic_data()
+    print('Train=', train_x.shape, type(train_x))
+    print('Test=', test_x.shape)
+        
+       #[1, 2, 4, 6]              #different kernel function degrees
+    lambdaPara = 0.1
+    
+    
+    #for kernel function 1 Polynomial order 
+    indexPlot = 0
+    YPredictLstMap = {}
+    mseErrorLst = []
+    for i in iPolyLst:
+        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncPoly, i, lambdaPara)
+        
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+
+        print('KRRS mseError poly i=', mseError, i)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+        
+    for j in iTrigLst:
+        YPred = KRRS((train_x, train_y), (test_x, test_y), kernelFuncTrigo, j, lambdaPara)
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+        print('KRRS mseError trignometric i=', mseError, j)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+        
+        
+    return YPredictLstMap, mseErrorLst

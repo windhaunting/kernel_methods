@@ -9,13 +9,19 @@ Created on Fri Oct 27 22:05:32 2017
 import numpy as np
 from sklearn.linear_model import Ridge
 
+from math import sin
+from math import cos
+
+from run_me import read_synthetic_data
+from run_me import compute_MSE
+
 
 #basis expansion + kernel ridge
 
 def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):     
     '''
     kernel ridge regression from scratch
-    k(x1,x2) = (1+x1 * x2) ^i
+    e.g. k(x1,x2) = (1+x1 * x2) ^i
     input :
         synthetic data
         powerI = i
@@ -82,3 +88,74 @@ def BERRRidge(trainData, testData, basisExpanfunc, powerI, lambdaPara):
     print ("YPred: ",YPred, powerI, type(YPred), YPred.shape)
 
     return YPred
+
+
+def basisExpansPoly(x, i):
+    '''
+    # \phi(x) = [1, x, x^2, ...., x^i]
+    '''
+    phi = []
+    print ("xxxxxxxxxxxxaa: ", x, len(x), x[0])
+    
+    for j in range(0, i+1):
+        phi.append(pow(x[0], j))
+    return phi
+
+def basisExpansTrigo(x, i):
+    '''
+    #\phi(x) = [1, sinδx, cosδx, sin2δx, cos2δx, ..., siniδx, cosiδx]
+    '''
+    phi = [1]
+    sigma = 0.5
+    #print ("xxxxxxxxxxxx: ", x, len(x), type(x))
+    for j in range(1, i+1):
+        #if sin(radians(j*sigma*x[0])) != 0:
+        phi.append(sin(j*sigma*x[0]))           #radians()
+        phi.append(cos(j*sigma*x[0]))
+    return phi
+
+
+
+
+def BasisExpansionRidge(iPolyLst, iTrigLst):
+    '''
+    BERR execution for plotting
+    '''
+    train_x, train_y, test_x, test_y = read_synthetic_data()
+    print('Train=', train_x.shape, type(train_x))
+    print('Test=', test_x.shape)
+
+    iPolyLst = [2, 6]     #  [1, 2, 4, 6]     #different polynomial basis function degrees
+    lambdaPara = 0.1
+    
+    iTrigLst = [5, 10]            
+   
+    YPredictLstMap = {}
+    indexPlot = 1
+    mseErrorLst = []
+
+    for i in iPolyLst:  #[1:]:            #test only
+        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)        
+        YPred = BERRRidge((train_x, train_y), (test_x, test_y), basisExpansPoly, i, lambdaPara)
+
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+
+        print('BEER mseError poly i=', mseError, i)
+
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+    
+    
+    for j in iTrigLst:
+        #YPred = BERRScratch((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+        YPred = BERRRidge((train_x, train_y), (test_x, test_y), basisExpansTrigo, j, lambdaPara)
+
+        mseError = compute_MSE(test_y, YPred)
+        mseErrorLst.append(mseError)
+
+        print('BEER mseError trignometric i=', mseError, j)
+        YPredictLstMap[indexPlot] = YPred
+        indexPlot += 2
+    
+    return YPredictLstMap, mseErrorLst
