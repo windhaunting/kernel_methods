@@ -11,7 +11,7 @@ from sklearn.svm import SVC
 from commons import read_tumor_data
 from sklearn.model_selection import cross_val_score
  
-def  svmSklearnCV(kfold = 5, fileTestOutput = "best_cv"):
+def  svmSklearnCV(kfold = 7, fileTestOutput = "best_cv"):
     '''
     call svm train and predict for different parameters for tumor data
     use cross validation to get out of sample out of sample meansquared error
