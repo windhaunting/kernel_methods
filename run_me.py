@@ -76,9 +76,9 @@ if __name__== "__main__":
 
     #extra credit 1
     print ("extra credit 1 begin to predict for credit card activity: " )
-    kfold = 7
-    fileTestOutput = "../Predictions/CreditCard/best_extra_credit.csv_" + str(kfold)
-    trainKernelRidgeExtra(kfold, fileTestOutput)
+    fileTestOutput = "../Predictions/CreditCard/best_extra_credit.csv_"
+    resultFile = "../Predictions/CreditCard/resultFile.csv_"
+    trainKernelRidgeExtra(fileTestOutput, resultFile)
     
 '''
 

@@ -7,6 +7,7 @@ Created on Mon Oct 24 10:22:03 2017
 """
 
 import numpy as np
+import csv
 
 #Commons read file
 
@@ -47,5 +48,11 @@ def read_tumor_data():
 def compute_MSE(y, y_hat):
 	# mean squared error
 	return np.mean(np.power(y - y_hat, 2))
+
+def 	writeToFile(fd, row):
+    #fd = open(filePath, 'a')
+    writer = csv.writer(fd)
+    writer.writerow(row)
+    
 
 ############################################################################
