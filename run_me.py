@@ -65,12 +65,15 @@ if __name__== "__main__":
 
     #tumor data classification; presence/absence of tumor
     print ("begin to classify for tumor data for question 2a: " )
-    kfoldLst = [5, 6, 7, 8, 9, 10]
-    for kfold in kfoldLst:
-        fileTestOutputDT = "../Predictions/Tumor/best_cv_" + str(kfold)
-        svmSklearnCV(kfold, fileTestOutputDT)
+    kfold = 7
+    fileTestOutputDT = "../Predictions/Tumor/best_cv_" + str(kfold)
+    svmSklearnCV(kfold, fileTestOutputDT)
     
 
+    #extra credit 1
+    print ("extra credit 1 begin to predict for credit card activity: " )
+
+    #trainKernelRidgeExtra()
 
 '''
 

@@ -22,12 +22,12 @@ def  svmSklearnCV(kfold = 5, fileTestOutput = "best_cv"):
     print('Test=', test_x.shape)
 
 
-    cLst = [1, 0.01, ]
+    cLst = [1, 0.01, 0.0001]
     gammaLst = [1, 0.01, 0.001]
     kernelParaLst = ['rbf', 'poly=3', 'poly=5', 'linear']
     degree = 3
     
-    mseErrorSmallest = 2**32
+    accuracyLargest = -2**32
     for c in cLst:
         for gamma in gammaLst:
             for kernel in kernelParaLst:
@@ -36,15 +36,15 @@ def  svmSklearnCV(kfold = 5, fileTestOutput = "best_cv"):
                     kernel = kernel.split("=")[0]
                 clf = SVC(C=c, kernel=kernel, degree=degree, gamma = gamma)
                 
-                mseError = -1*np.mean(cross_val_score(clf, train_x, train_y, cv=kfold, scoring="neg_mean_squared_error"))
-                print ("mseError: ", c, gamma, kernel, degree, mseError)
-                if mseError < mseErrorSmallest:
-                    mseErrorSmallest = mseError
+                accuracy = np.mean(cross_val_score(clf, train_x, train_y, cv=kfold, scoring="accuracy"))
+                print ("accuracy: ", c, gamma, kernel, degree, accuracy)
+                if accuracy > accuracyLargest:
+                    accuracyLargest = accuracy
                     paramtersBest = [c, gamma, degree, kernel]
                 
                 
                 
-    print ("best mseError: ", kfold, paramtersBest,  mseErrorSmallest)
+    print ("best accuracy parameters: ", kfold, paramtersBest,  accuracyLargest)
 
     #train whole data
     clf = SVC(C=paramtersBest[0], gamma = paramtersBest[1], degree=paramtersBest[2], kernel=paramtersBest[3])
@@ -53,7 +53,7 @@ def  svmSklearnCV(kfold = 5, fileTestOutput = "best_cv"):
 
     #output file
     if fileTestOutput != "":
-        kaggle.kaggleize(yPred, fileTestOutput, True)
+        kaggle.kaggleize(yPred, fileTestOutput, False)
         
 
 
