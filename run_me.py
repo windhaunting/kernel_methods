@@ -10,6 +10,7 @@ from commons import read_synthetic_data
 
 from kernelRidgeSklearn import kernelRidgeSkLearnCV 
 
+from svmSklearn import svmSklearnCV
 
 
 
@@ -53,16 +54,22 @@ if __name__== "__main__":
 
     '''
     # credit card activity dataset regression
-    
+    '''
     print ("begin to predict for credit card activity for question 1e: " )
     #kfoldLst = [5, 6, 7, 8, 9, 10]
     kfold = 8
     fileTestOutputDT = "../Predictions/CreditCard/best_cv_" + str(kfold)
     kernelRidgeSkLearnCV(kfold, fileTestOutputDT)
-        
+       
+    '''
 
-
-    #
+    #tumor data classification; presence/absence of tumor
+    print ("begin to classify for tumor data for question 2a: " )
+    kfoldLst = [5, 6, 7, 8, 9, 10]
+    for kfold in kfoldLst:
+        fileTestOutputDT = "../Predictions/Tumor/best_cv_" + str(kfold)
+        svmSklearnCV(kfold, fileTestOutputDT)
+    
 
 
 '''
