@@ -10,7 +10,10 @@ import kaggle
 from sklearn.svm import SVC
 from commons import read_tumor_data
 from sklearn.model_selection import cross_val_score
- 
+from sklearn.model_selection import GridSearchCV
+from commons import writeToFile
+
+
 def  svmSklearnCV(kfold = 7, fileTestOutput = "best_cv"):
     '''
     call svm train and predict for different parameters for tumor data
@@ -57,3 +60,46 @@ def  svmSklearnCV(kfold = 7, fileTestOutput = "best_cv"):
         
 
 
+def trainSVMExtra(fileTestOutput, resultFile):
+    '''
+    for extra credit 1
+    try different kernel ridge model or even different kernel
+    how to select effective kernel
+    '''
+    
+    train_x, train_y, test_x  = read_tumor_data()
+    print('Train=', train_x.shape, type(train_x))
+    print('Test=', test_x.shape)
+  
+    #[1, 0.01, 0.001, 0.0001]
+    fd = open(resultFile, 'a')
+
+    kfoldLst = range(3,12)
+    biggestAccuracy = -2**32
+    
+    for kfold in kfoldLst:
+        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 10, 10), 'gamma':[0.001, 1, 100], 'degree':np.linspace(1, 10, 10)}
+        
+        clf = GridSearchCV(SVC(), parameters, cv=kfold, n_jobs=8)   #scoring= "neg_mean_squared_error" )
+        clf.fit(train_x, train_y)
+        meanTestError = clf.cv_results_['mean_test_score']
+        bestPara = clf.best_estimator_
+        
+        if clf.best_score_ > biggestAccuracy:
+            biggestAccuracy = clf.best_score_
+            paramtersBest = [bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, kfold, clf.best_score_]
+            
+        print ("trainKernelRidgeExtra Result : ", bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, clf.best_score_, meanTestError,)
+        writeToFile(fd, [bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, kfold, clf.best_score_] + list([meanTestError]))        
+       # kwargs = {'n_neighbors': bestPara.n_neighbors}
+
+        clf = SVC(C=bestPara.C, gamma = bestPara.gamma, degree=bestPara.degree, kernel=bestPara.kernel)
+        clf.fit(train_x, train_y)
+        predY = clf.predict(test_x)
+        
+        #print ("predY DT: ", predY)
+        #output to file
+        if fileTestOutput != "":
+            kaggle.kaggleize(predY, fileTestOutput + str(kfold), True)
+
+    print ("best final trainKernelRidgeExtra Result: ", paramtersBest)

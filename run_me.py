@@ -14,7 +14,8 @@ from kernelRidgeSklearn import trainKernelRidgeExtra
 
 from svmSklearn import svmSklearnCV
 
-
+from svmSklearn import trainSVMExtra
+ 
 
 if __name__== "__main__":
            
@@ -26,10 +27,11 @@ if __name__== "__main__":
     iPolyLst = [2, 6]
     iTrigLst = [5, 10]
 
+    #KRRS
     YPredictLstMapKRRS, mseErrorLstKRRS = KernelRidgeScratch(iPolyLst, iTrigLst)
     
-    iPolyLst = [2, 6]
-    iTrigLst = [5, 10]
+    
+    #BERR
     YPredictLstMapBERR, mseErrorLstBEER = BasisExpansionRidge(iPolyLst, iTrigLst)
     
     YPredictLstMapDegreeAll = {**YPredictLstMapKRRS, **YPredictLstMapBERR}  
@@ -73,12 +75,21 @@ if __name__== "__main__":
     svmSklearnCV(kfold, fileTestOutput)
     '''
     
-
+    '''
     #extra credit 1
     print ("extra credit 1 begin to predict for credit card activity: " )
     fileTestOutput = "../Predictions/CreditCard/best_extra_credit.csv_"
     resultFile = "../Predictions/CreditCard/resultFile.csv"
     trainKernelRidgeExtra(fileTestOutput, resultFile)
+    
+    '''
+    
+    #extra credit 2
+    print ("extra credit 2 begin to classify for tumor: " )
+    fileTestOutput = "../Predictions/Tumor/best_extra_credit.csv_"
+    resultFile = "../Predictions/Tumor/resultFile.csv"
+    trainSVMExtra(fileTestOutput, resultFile)
+    
     
 '''
 
