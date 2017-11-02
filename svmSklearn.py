@@ -78,9 +78,9 @@ def trainSVMExtra(fileTestOutput, resultFile):
     biggestAccuracy = -2**32
     
     for kfold in kfoldLst:
-        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 10, 10), 'gamma':[0.001, 1, 100], 'degree':np.linspace(1, 10, 10)}
+        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 10, 10), 'gamma':[0.001, 0.1, 100], 'degree':np.linspace(1, 10, 10)}
         
-        clf = GridSearchCV(SVC(), parameters, cv=kfold, n_jobs=8)   #scoring= "neg_mean_squared_error" )
+        clf = GridSearchCV(SVC(), parameters, cv=kfold, n_jobs=10)   #scoring= "neg_mean_squared_error" )
         clf.fit(train_x, train_y)
         meanTestError = clf.cv_results_['mean_test_score']
         bestPara = clf.best_estimator_
@@ -89,7 +89,7 @@ def trainSVMExtra(fileTestOutput, resultFile):
             biggestAccuracy = clf.best_score_
             paramtersBest = [bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, kfold, clf.best_score_]
             
-        print ("trainKernelRidgeExtra Result : ", bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, clf.best_score_, meanTestError,)
+        #print ("trainKernelRidgeExtra Result : ", bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, clf.best_score_, meanTestError,)
         writeToFile(fd, [bestPara.C, bestPara.gamma, bestPara.degree,  bestPara.kernel, kfold, clf.best_score_] + list([meanTestError]))        
        # kwargs = {'n_neighbors': bestPara.n_neighbors}
 
