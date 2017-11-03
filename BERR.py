@@ -19,7 +19,7 @@ from commons import compute_MSE
 
 def BERRScratch(trainData, testData, basisExpanfunc, powerI, lambdaPara):     
     '''
-    kernel ridge regression from scratch
+    Basis Expansion + ridge regression 
     e.g. k(x1,x2) = (1+x1 * x2) ^i
     input :
         synthetic data

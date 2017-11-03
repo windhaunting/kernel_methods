@@ -21,7 +21,7 @@ if __name__== "__main__":
            
     train_x, train_y, test_x, test_y = read_synthetic_data()
 
-    '''
+    
     # question 1 d1 
     print ("begin to get the plotting from KRRS and BERR for question 1d1: " )
     iPolyLst = [2, 6]
@@ -39,8 +39,7 @@ if __name__== "__main__":
     #print('YPredictLstDegreeAll=', len(YPredictLstMapDegreeAll))
     plotKernelRegression(test_x, test_y, YPredictLstMapDegreeAll)
     
-    '''
-    '''
+    
     #question 1d2
     print ("begin to get the MSE from KRRS and BERR for question 1d2: " )
 
@@ -56,76 +55,36 @@ if __name__== "__main__":
     print ("mseErrors: ", mseErrorLstKRRS)
     print ("mseErrors: ", mseErrorLstBEER)
 
-    '''
+    
     # credit card activity dataset regression
-    '''
+    
     print ("begin to predict for credit card activity for question 1e: " )
     #kfoldLst = [5, 6, 7, 8, 9, 10]
     kfold = 8
     fileTestOutput = "../Predictions/CreditCard/best_cv_" + str(kfold)
     kernelRidgeSkLearnCV(kfold, fileTestOutput)
        
-    '''
+    
 
-    '''
+    
     #tumor data classification; presence/absence of tumor
     print ("begin to classify for tumor data for question 2a: " )
     kfold = 7
     fileTestOutput = "../Predictions/Tumor/best_cv_" + str(kfold)
     svmSklearnCV(kfold, fileTestOutput)
-    '''
     
-    '''
+    
     #extra credit 1
     print ("extra credit 1 begin to predict for credit card activity: " )
     fileTestOutput = "../Predictions/CreditCard/best_extra_credit.csv_"
     resultFile = "../Predictions/CreditCard/resultFile.csv"
     trainKernelRidgeExtra(fileTestOutput, resultFile)
+
     
-    '''
     
     #extra credit 2
     print ("extra credit 2 begin to classify for tumor: " )
-    fileTestOutput = "../Predictions/Tumor/best_extra_tumor.csv_"
+    fileTestOutput = "../Predictions/Tumor/best_extra_credit.csv_"
     resultFile = "../Predictions/Tumor/resultFile.csv"
     trainSVMExtra(fileTestOutput, resultFile)
     
-    
-'''
-
-train_x, train_y, test_x, test_y = read_synthetic_data()
-print('Train=', train_x.shape)
-print('Test=', test_x.shape)
-
-train_x, train_y, test_x  = read_creditcard_data()
-print('Train=', train_x.shape)
-print('Test=', test_x.shape)
-
-# Create dummy test output values to compute MSE
-test_y = np.random.rand(test_x.shape[0], train_y.shape[1])
-predicted_y = np.random.rand(test_x.shape[0], train_y.shape[1])
-print('DUMMY MSE=%0.4f' % compute_MSE(test_y, predicted_y))
-
-# Output file location
-file_name = '../Predictions/CreditCard/best.csv'
-# Writing output in Kaggle format
-print('Writing output to ', file_name)
-kaggle.kaggleize(predicted_y, file_name, True)
-
-train_x, train_y, test_x  = read_tumor_data()
-print('Train=', train_x.shape)
-print('Test=', test_x.shape)
-
-# Create dummy test output values to compute accuracy
-test_y = np.random.randint(0, 2, (test_x.shape[0], 1))
-predicted_y = np.random.randint(0, 2, (test_x.shape[0], 1))
-print('DUMMY Accuracy=%0.4f' % accuracy_score(test_y, predicted_y, normalize=True))
-
-# Output file location
-file_name = '../Predictions/Tumor/best.csv'
-# Writing output in Kaggle format
-print('Writing output to ', file_name)
-kaggle.kaggleize(predicted_y, file_name, False)
-
-
-'''
