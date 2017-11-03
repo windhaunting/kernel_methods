@@ -78,7 +78,7 @@ def trainSVMExtra(fileTestOutput, resultFile):
     biggestAccuracy = -2**32
     
     for kfold in kfoldLst:
-        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 5, 5), 'gamma':[0.001, 0.1, 20], 'degree':np.linspace(1, 10, 10)}
+        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 5, 5), 'gamma':[0.001, 0.1, 20], 'degree':np.linspace(1, 5, 5)}
         
         clf = GridSearchCV(SVC(), parameters, cv=kfold, n_jobs=10)   #scoring= "neg_mean_squared_error" )
         clf.fit(train_x, train_y)
@@ -100,6 +100,6 @@ def trainSVMExtra(fileTestOutput, resultFile):
         #print ("predY DT: ", predY)
         #output to file
         if fileTestOutput != "":
-            kaggle.kaggleize(predY, fileTestOutput + str(kfold), True)
+            kaggle.kaggleize(predY, fileTestOutput + str(kfold), False)
 
     print ("best final trainKernelRidgeExtra Result: ", paramtersBest)

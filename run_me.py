@@ -86,7 +86,7 @@ if __name__== "__main__":
     
     #extra credit 2
     print ("extra credit 2 begin to classify for tumor: " )
-    fileTestOutput = "../Predictions/Tumor/best_extra_credit.csv_"
+    fileTestOutput = "../Predictions/Tumor/best_extra_tumor.csv_"
     resultFile = "../Predictions/Tumor/resultFile.csv"
     trainSVMExtra(fileTestOutput, resultFile)
     
