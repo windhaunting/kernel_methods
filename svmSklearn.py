@@ -78,7 +78,7 @@ def trainSVMExtra(fileTestOutput, resultFile):
     biggestAccuracy = -2**32
     
     for kfold in kfoldLst:
-        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 10, 10), 'gamma':[0.001, 0.1, 100], 'degree':np.linspace(1, 10, 10)}
+        parameters = {'kernel':('linear', 'rbf','sigmoid', 'poly'), 'C':np.linspace(1, 5, 5), 'gamma':[0.001, 0.1, 20], 'degree':np.linspace(1, 10, 10)}
         
         clf = GridSearchCV(SVC(), parameters, cv=kfold, n_jobs=10)   #scoring= "neg_mean_squared_error" )
         clf.fit(train_x, train_y)
