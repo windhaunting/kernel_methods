@@ -7,5 +7,7 @@
 
 (2) Implement a basis expansion + ridge regression from scratch
 
+(3) Use sklearn kernel ridge for credit card prediction
 
+(4) Use SVM to classify tumor dataset
 
